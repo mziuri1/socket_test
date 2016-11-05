@@ -33,11 +33,7 @@ public class Server {
     }
     
     public static void sendMessageToAllClient(String msg, int authorId) {
-        System.out.println(clientList.size());
-        System.out.println(authorId);
-        System.out.println("------");
         for (ServerThread st : clientList) {
-            System.out.println(st.getClientId());
             if (st.getClientId() != authorId) {
                 st.sendMessage(msg);
             }

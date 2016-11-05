@@ -16,9 +16,7 @@ public class Client {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
-            new Runnable() {
-
-                @Override
+            Thread thread = new Thread(){
                 public void run() {
                     try {
                         while (true) {
@@ -27,12 +25,12 @@ public class Client {
                         }
                     } catch(IOException ex) {
                         System.out.println(ex.getMessage());
-                    }
-                }
-            }.run();
+                    }   
+                }  
+            };
+            thread.start();
             while (scanner.hasNextLine()) {
                 String text = scanner.nextLine();
-                System.out.println("rame");
                 out.writeUTF(text);
             }
             in.close();
