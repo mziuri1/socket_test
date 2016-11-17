@@ -9,22 +9,20 @@ import java.util.List;
 
 public class Server {
     
-    private static int idGenerator = 1;
-    
     private static List<ServerThread> clientList = new ArrayList<>();
+    
+    private static int idGenerator = 1;
     
     public static void main(String[] args) {
         
         try {
-            ServerSocket server = new ServerSocket(8080);
+            ServerSocket server = new ServerSocket(8659);
             while (true) {
                 Socket socket = server.accept();
                 ServerThread serverThread = new ServerThread(socket, idGenerator);
                 idGenerator++;
-                clientList.add(serverThread);
                 serverThread.start();
-                System.out.println("სერვერს დაუკავშირდა კლიენტი id_თ " + serverThread.getClientId());
-                System.out.println("კავშირზეა " + clientList.size() + " კლიენტი!" + System.lineSeparator());
+                clientList.add(serverThread);
             }
         } catch(IOException ex) {
             System.out.println(ex.getMessage());
@@ -36,6 +34,15 @@ public class Server {
         for (ServerThread st : clientList) {
             if (st.getClientId() != authorId) {
                 st.sendMessage(msg);
+            }
+        }
+    }
+    
+    public static void deleteClientFromList(int id) {
+        for (ServerThread st : clientList) {
+            if (st.getClientId() == id) {
+                clientList.remove(st);
+                break;
             }
         }
     }
